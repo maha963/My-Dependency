@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    id ("maven-publish")
 }
 
 android {
@@ -36,3 +37,20 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("ReleaseAar") {
+                groupId = "com.github.maha963" // Use your GitHub username or appropriate group ID
+                artifactId = "mylibrary" // The name of your library
+                version = "1.0.0" // Version of the library
+
+                // Link the generated AAR file to the MavenPublication
+                artifact(tasks.getByName("bundleReleaseAar"))
+            }
+        }
+    }
+}
+
